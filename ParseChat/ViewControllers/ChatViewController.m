@@ -8,6 +8,7 @@
 #import "ChatViewController.h"
 #import "Parse/Parse.h"
 #import "ChatCell.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -63,6 +64,7 @@
     cell.messageLabel.text = message[@"text"];
     
     PFUser *user = message[@"user"];
+    
     if (user != nil) {
         // User found! update username label with username
         cell.userLabel.text = user.username;
@@ -70,6 +72,10 @@
         // No user found, set default username
         cell.userLabel.text = @"🤖";
     }
+    
+    NSString *baseURLString = @"https://api.hello-avatar.com/adorables/";
+    NSURL *avatarURL = [NSURL URLWithString:[baseURLString stringByAppendingString:(user != nil ? user.username : @"default")]];
+    [cell.avatarImageView setImageWithURL:avatarURL];
     return cell;
     
     
