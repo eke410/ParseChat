@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *messageTextField;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *messages;
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 @end
 
@@ -23,13 +24,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onTimer) userInfo:nil repeats:true];
-    [self onTimer];
+    [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(requeryChatFeed) userInfo:nil repeats:true];
+    [self requeryChatFeed];
 
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
     self.messages = [NSArray new];
+    self.refreshControl = [UIRefreshControl new];
+    
+    [self.refreshControl addTarget:self action:@selector(refreshFeed) forControlEvents:UIControlEventValueChanged];
+    [self.tableView insertSubview:self.refreshControl atIndex:0];
 }
 
 - (IBAction)sendMessage:(id)sender {
@@ -70,7 +75,7 @@
     
 }
 
-- (void)onTimer {
+- (void)requeryChatFeed {
     // construct query
     PFQuery *query = [PFQuery queryWithClassName:@"Message_FBU2021"];
     [query includeKey:@"user"];
@@ -86,8 +91,11 @@
             NSLog(@"%@", error.localizedDescription);
         }
     }];
-    
+}
 
+- (void)refreshFeed {
+    [self requeryChatFeed];
+    [self.refreshControl endRefreshing];
 }
 
 
