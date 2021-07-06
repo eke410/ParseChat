@@ -36,6 +36,8 @@
     
     [self.refreshControl addTarget:self action:@selector(refreshFeed) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
+    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (IBAction)sendMessage:(id)sender {
@@ -70,7 +72,7 @@
         cell.userLabel.text = user.username;
     } else {
         // No user found, set default username
-        cell.userLabel.text = @"🤖";
+        cell.userLabel.text = @"Anonymous user";
     }
     
     NSString *baseURLString = @"https://api.hello-avatar.com/adorables/";
