@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) UIAlertController *emptyAlert;
 @property (strong, nonatomic) UIAlertController *registerErrorAlert;
 @property (strong, nonatomic) UIAlertController *loginErrorAlert;
@@ -37,14 +38,15 @@
     
     self.loginErrorAlert = [UIAlertController alertControllerWithTitle:@"Error logging in user" message:@"Please try again." preferredStyle:(UIAlertControllerStyleAlert)];
     [self.loginErrorAlert addAction:okAction];
-
 }
 
 - (IBAction)registerUser:(id)sender {
+    [self.activityIndicator startAnimating];
     
     if ([self.usernameTextField.text isEqual:@""] || [self.passwordTextField.text isEqual:@""]) {
         [self presentViewController:self.emptyAlert animated:YES completion:^{
             // optional code for what happens after the alert controller has finished presenting
+            [self.activityIndicator stopAnimating];
         }];
     } else {
         // initialize a user object
@@ -61,10 +63,12 @@
                 NSLog(@"Error: %@", error.localizedDescription);
                 [self presentViewController:self.registerErrorAlert animated:YES completion:^{
                     // optional code for what happens after the alert controller has finished presenting
+                    [self.activityIndicator stopAnimating];
                 }];
             } else {
                 NSLog(@"User registered successfully");
-                
+                [self.activityIndicator stopAnimating];
+
                 // manually segue to logged in view
             }
         }];
@@ -72,10 +76,12 @@
 }
 
 - (IBAction)loginUser:(id)sender {
+    [self.activityIndicator startAnimating];
     
     if ([self.usernameTextField.text isEqual:@""] || [self.passwordTextField.text isEqual:@""]) {
         [self presentViewController:self.emptyAlert animated:YES completion:^{
             // optional code for what happens after the alert controller has finished presenting
+            [self.activityIndicator stopAnimating];
         }];
     } else {
         NSString *username = self.usernameTextField.text;
@@ -86,9 +92,11 @@
                 NSLog(@"User log in failed: %@", error.localizedDescription);
                 [self presentViewController:self.loginErrorAlert animated:YES completion:^{
                     // optional code for what happens after the alert controller has finished presenting
+                    [self.activityIndicator stopAnimating];
                 }];
             } else {
                 NSLog(@"User logged in successfully");
+                [self.activityIndicator stopAnimating];
                 [self performSegueWithIdentifier:@"loginSegue" sender:nil];
                 // display view controller that needs to shown after successful login
             }

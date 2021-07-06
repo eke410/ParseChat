@@ -44,11 +44,16 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="nfE-kK-FNR">
+                                <rect key="frame" x="197" y="456" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="nfE-kK-FNR" id="laM-Qn-f1c"/>
                         <outlet property="passwordTextField" destination="J0H-0x-reG" id="LpA-gE-rev"/>
                         <outlet property="usernameTextField" destination="gvh-CK-2yJ" id="urt-wE-e10"/>
                         <segue destination="EHF-Ac-ylw" kind="presentation" identifier="loginSegue" id="N15-nA-Jen"/>
